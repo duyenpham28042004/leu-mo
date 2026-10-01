@@ -412,6 +412,282 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
     });
+    /* ================= CHỌN MÓN ================= */
 
+const foodCards =
+    document.querySelectorAll(".food-card");
+
+const selectedFoods =
+    document.getElementById("selectedFoods");
+
+const selectedFoodsTotal =
+    document.getElementById("selectedFoodsTotal");
+
+const orderInput =
+    document.getElementById("order");
+
+const cart = {};
+
+
+/* ================= GIỎ HÀNG NỔI ================= */
+
+const floatingCart =
+    document.createElement("button");
+
+floatingCart.type = "button";
+
+floatingCart.className = "floating-cart";
+
+floatingCart.innerHTML = `
+    <span class="floating-cart-icon">🛒</span>
+
+    <span class="floating-cart-info">
+        <strong id="floatingCartCount">0 món</strong>
+        <small id="floatingCartTotal">0K</small>
+    </span>
+
+    <span class="floating-cart-arrow">→</span>
+`;
+
+document.body.appendChild(floatingCart);
+
+
+/* Bấm giỏ → đi xuống phần đặt bàn */
+
+floatingCart.addEventListener("click", () => {
+
+    const bookingSection =
+        document.getElementById("booking");
+
+    if (bookingSection) {
+
+        bookingSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }
+
+});
+
+
+/* ================= TẠO NÚT CHỌN ================= */
+
+foodCards.forEach(card => {
+
+    const name =
+        card.querySelector("h3").textContent.trim();
+
+    const priceText =
+        card.querySelector(".price").textContent.trim();
+
+    const price =
+        parseInt(priceText.replace(/\D/g, ""));
+
+    const foodInfo =
+        card.querySelector(".food-info");
+
+
+    const button =
+        document.createElement("button");
+
+    button.type = "button";
+
+    button.className =
+        "food-select-btn";
+
+    button.textContent =
+        "+ Chọn món";
+
+
+    foodInfo.appendChild(button);
+
+
+    button.addEventListener("click", () => {
+
+        if (!cart[name]) {
+
+            cart[name] = {
+                price: price,
+                quantity: 1,
+                button: button
+            };
+
+        } else {
+
+            cart[name].quantity++;
+
+        }
+
+
+        updateCart();
+
+        updateFoodButton(name);
+
+    });
+
+});
+
+
+/* ================= CẬP NHẬT NÚT MÓN ================= */
+
+function updateFoodButton(name) {
+
+    const item = cart[name];
+
+    if (!item) return;
+
+
+    item.button.textContent =
+        `✓ Đã chọn · ${item.quantity}`;
+
+    item.button.classList.add("selected");
+
+}
+
+
+/* ================= CẬP NHẬT GIỎ ================= */
+
+function updateCart() {
+
+    selectedFoods.innerHTML = "";
+
+    let total = 0;
+
+    let totalQuantity = 0;
+
+    const items =
+        Object.entries(cart);
+
+
+    if (items.length === 0) {
+
+        selectedFoods.textContent =
+            "Chưa chọn món nào.";
+
+        selectedFoodsTotal.textContent =
+            "0K";
+
+        orderInput.value = "";
+
+        floatingCart.classList.remove("active");
+
+        return;
+
+    }
+
+
+    items.forEach(([name, item]) => {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "selected-food-row";
+
+
+        const subtotal =
+            item.price * item.quantity;
+
+
+        total += subtotal;
+
+        totalQuantity += item.quantity;
+
+
+        row.innerHTML = `
+
+            <span class="selected-food-name">
+                ${name}
+            </span>
+
+            <span class="selected-food-quantity">
+                × ${item.quantity}
+            </span>
+
+            <strong>
+                ${subtotal}K
+            </strong>
+
+            <button
+                type="button"
+                class="remove-food"
+            >
+                −
+            </button>
+
+        `;
+
+
+        row.querySelector(".remove-food")
+            .addEventListener("click", () => {
+
+                item.quantity--;
+
+
+                if (item.quantity <= 0) {
+
+                    item.button.textContent =
+                        "+ Chọn món";
+
+                    item.button.classList.remove(
+                        "selected"
+                    );
+
+                    delete cart[name];
+
+                } else {
+
+                    updateFoodButton(name);
+
+                }
+
+
+                updateCart();
+
+            });
+
+
+        selectedFoods.appendChild(row);
+
+    });
+
+
+    selectedFoodsTotal.textContent =
+        `${total}K`;
+
+
+    orderInput.value =
+        items.map(([name, item]) => {
+
+            const subtotal =
+                item.price * item.quantity;
+
+            return `${name} x ${item.quantity} - ${subtotal}K`;
+
+        }).join("\n")
+        + `\nTạm tính: ${total}K`;
+
+
+    /* Cập nhật giỏ nổi */
+
+    document.getElementById(
+        "floatingCartCount"
+    ).textContent =
+        `${totalQuantity} món`;
+
+
+    document.getElementById(
+        "floatingCartTotal"
+    ).textContent =
+        `${total}K`;
+
+
+    floatingCart.classList.add("active");
+
+}
+
+
+/* ================= KẾT THÚC ================= */
 
 });

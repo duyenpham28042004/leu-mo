@@ -1726,3 +1726,203 @@ button {
     font-size: 12px;
     line-height: 1.6;
 }
+/* ================= CHỌN MÓN ================= */
+
+.food-select-btn {
+    width: 78px;
+    height: 78px;
+
+    flex: 0 0 78px;
+
+    margin-top: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(201, 152, 76, .55);
+    background: transparent;
+
+    color: #c9984c;
+
+    font-family: "Be Vietnam Pro", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+
+    letter-spacing: .3px;
+    line-height: 1.4;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    transition: .25s ease;
+}
+
+.food-select-btn:hover {
+    background: #c9984c;
+    color: #17130f;
+}
+
+.food-select-btn.selected {
+    background: #c9984c;
+    color: #17130f;
+    border-color: #c9984c;
+}
+
+
+/* ================= MÓN ĐÃ CHỌN ================= */
+
+.selected-foods-box {
+    margin: 18px 0 22px;
+    padding: 18px;
+    border: 1px solid rgba(201, 152, 76, .35);
+    background: rgba(201, 152, 76, .06);
+}
+
+.selected-foods-title {
+    margin-bottom: 12px;
+    color: #c9984c;
+    font-family: "Be Vietnam Pro", sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+#selectedFoods {
+    color: rgba(255,255,255,.65);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.selected-food-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.selected-food-name {
+    color: #fff;
+}
+
+.selected-food-quantity {
+    color: rgba(255,255,255,.6);
+}
+
+.selected-food-row strong {
+    color: #c9984c;
+    white-space: nowrap;
+}
+
+.remove-food {
+    width: 24px;
+    height: 24px;
+    border: 1px solid rgba(255,255,255,.25);
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+}
+
+.selected-foods-total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(201,152,76,.3);
+    color: rgba(255,255,255,.7);
+    font-size: 13px;
+}
+
+.selected-foods-total strong {
+    color: #c9984c;
+    font-size: 17px;
+}
+/* ================= GIỎ HÀNG NỔI ================= */
+
+.floating-cart {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-width: 210px;
+
+    padding: 12px 16px;
+
+    border: 1px solid rgba(201,152,76,.65);
+
+    background: rgba(25,21,17,.97);
+
+    color: #fff;
+
+    box-shadow: 0 12px 35px rgba(0,0,0,.4);
+
+    cursor: pointer;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(20px);
+
+    transition: .3s ease;
+}
+
+.floating-cart.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.floating-cart:hover {
+    border-color: #c9984c;
+}
+
+.floating-cart-icon {
+    font-size: 22px;
+}
+
+.floating-cart-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+
+    flex: 1;
+}
+
+.floating-cart-info strong {
+    color: #fff;
+    font-size: 13px;
+}
+
+.floating-cart-info small {
+    color: #c9984c;
+    font-size: 12px;
+}
+
+.floating-cart-arrow {
+    color: #c9984c;
+    font-size: 20px;
+}
+
+
+/* Điện thoại */
+
+@media (max-width: 600px) {
+
+    .floating-cart {
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+        min-width: 0;
+    }
+
+}
