@@ -432,25 +432,7 @@ const cart = {};
 /* ================= GIỎ HÀNG NỔI ================= */
 
 const floatingCart =
-    document.createElement("button");
-
-floatingCart.type = "button";
-
-floatingCart.className = "floating-cart";
-
-floatingCart.innerHTML = `
-    <span class="floating-cart-icon">🛒</span>
-
-    <span class="floating-cart-info">
-        <strong id="floatingCartCount">0 món</strong>
-        <small id="floatingCartTotal">0K</small>
-    </span>
-
-    <span class="floating-cart-arrow">→</span>
-`;
-
-document.body.appendChild(floatingCart);
-
+    document.getElementById("floatingCart");
 
 /* Bấm giỏ → đi xuống phần đặt bàn */
 
@@ -627,20 +609,66 @@ function updateCart() {
 
                 if (item.quantity <= 0) {
 
-                    item.button.textContent =
-                        "+ Chọn món";
+    /* Nếu là món ăn */
+    if (item.button) {
 
-                    item.button.classList.remove(
+        item.button.textContent =
+            "+ Chọn món";
+
+        item.button.classList.remove(
+            "selected"
+        );
+
+    }
+
+    /* Nếu là combo */
+    else {
+
+        const comboCards =
+            document.querySelectorAll(".combo-card");
+
+        comboCards.forEach(combo => {
+
+            const comboName =
+                combo.querySelector(
+                    ".combo-text strong"
+                ).textContent.trim();
+
+            if (comboName === name) {
+
+                const comboButton =
+                    combo.querySelector(
+                        ".combo-select-btn"
+                    );
+
+                if (comboButton) {
+
+                    comboButton.textContent =
+                        "+ Chọn combo";
+
+                    comboButton.classList.remove(
                         "selected"
                     );
 
-                    delete cart[name];
-
-                } else {
-
-                    updateFoodButton(name);
-
                 }
+
+            }
+
+        });
+
+    }
+
+    delete cart[name];
+
+} else {
+
+    if (item.button) {
+
+        updateFoodButton(name);
+
+    }
+
+}
 
 
                 updateCart();
@@ -687,7 +715,50 @@ function updateCart() {
 
 }
 
+/* ================= CHỌN COMBO ================= */
 
+const comboCards = document.querySelectorAll(".combo-card");
+
+comboCards.forEach(combo => {
+
+    const button = combo.querySelector(".combo-select-btn");
+
+    if (!button) return;
+
+    button.addEventListener("click", () => {
+
+        const name =
+            combo.querySelector(".combo-text strong").textContent.trim();
+
+        const priceText =
+            combo.querySelector(".combo-action span").textContent.trim();
+
+        const price =
+            parseInt(priceText.replace(/\D/g, ""), 10);
+
+        if (cart[name]) {
+
+            cart[name].quantity++;
+
+        } else {
+
+            cart[name] = {
+                price: price,
+                quantity: 1
+            };
+
+        }
+
+        button.textContent =
+            `✓ Đã chọn · ${cart[name].quantity}`;
+
+        button.classList.add("selected");
+
+        updateCart();
+
+    });
+
+});
 /* ================= KẾT THÚC ================= */
 
 });
