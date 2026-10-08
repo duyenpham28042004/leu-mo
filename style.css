@@ -378,9 +378,9 @@ button {
 }
 
 .btn-primary {
-    color: #15110b;
-
-    background: var(--gold);
+    color: #15110b !important;
+    background: #c9984c !important;
+    opacity: 1 !important;
 }
 
 .btn-primary:hover {
